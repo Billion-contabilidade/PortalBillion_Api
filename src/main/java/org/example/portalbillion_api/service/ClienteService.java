@@ -5,6 +5,8 @@ import org.example.portalbillion_api.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ClienteService {
@@ -17,6 +19,10 @@ public class ClienteService {
     public List<Cliente> listarClientes(){
         return clienteRepository.findAll();
     }
+    public Optional<Cliente> buscarPorId(UUID id ){
+        return clienteRepository.findById(id);
+    }
+
     public Cliente cadastrarCliente(Cliente dados){
         Cliente cliente = new Cliente();
 
