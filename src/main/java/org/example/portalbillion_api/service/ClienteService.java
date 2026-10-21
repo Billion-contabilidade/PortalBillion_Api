@@ -33,5 +33,26 @@ public class ClienteService {
 
         return clienteRepository.save(cliente);
     }
+    public Optional<Cliente> atualizarCliente(UUID id, Cliente dados){
+        Optional<Cliente> resultado = clienteRepository.findById(id);
+
+        if (resultado.isEmpty()){
+            return Optional.empty();
+        }
+
+        Cliente cliente = resultado.get();
+
+        cliente.setLegalName(dados.getLegalName());
+        cliente.setCnpj(dados.getCnpj());
+        cliente.setTaxRegime(dados.getTaxRegime());
+        cliente.setStatus(dados.getStatus());
+
+        Cliente clienteSalvo = clienteRepository.save(cliente);
+
+        return Optional.of(clienteSalvo);
+    }
+
+
+
 
 }
