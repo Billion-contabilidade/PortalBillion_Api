@@ -3,6 +3,7 @@ package org.example.portalbillion_api.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.UUID;
 
@@ -19,6 +20,11 @@ public class Cliente {
     private String legalName;
 
     @NotBlank(message = "O CNPJ é obrigatorio")
+    @Pattern(
+            regexp = "[0-9]{14}",
+            message = "O cnpj deve conter 14 digitos numericos, sem pontuacao"
+    )
+    @Column(name = "cnpj", nullable = false, unique = true, length = 14)
     private String cnpj;
 
     @NotBlank(message = "O regime tributario é obrigatorio")

@@ -42,7 +42,7 @@ public class ClienteController {
         return ResponseEntity.ok(cliente.get());
 
     }
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Cliente> atualizarCliente(
             @PathVariable("id") UUID id,
             @Valid
@@ -57,4 +57,18 @@ public class ClienteController {
 
         return ResponseEntity.ok(cliente.get());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirCliente(
+            @PathVariable("id") UUID id){
+        boolean excluido = clienteService.excluirCliente(id);
+
+        if (!excluido){
+            return ResponseEntity.notFound().build();
+
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

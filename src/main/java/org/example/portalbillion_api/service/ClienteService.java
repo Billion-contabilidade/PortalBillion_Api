@@ -1,5 +1,6 @@
 package org.example.portalbillion_api.service;
 
+import org.example.portalbillion_api.exception.CnpjJaCadastradoException;
 import org.example.portalbillion_api.model.Cliente;
 import org.example.portalbillion_api.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,10 @@ public class ClienteService {
     }
 
     public Cliente cadastrarCliente(Cliente dados){
+
+        if (clienteRepository.existsByCnpj(dados.getCnpj())){
+            throw new CnpjJaCadastradoException();
+        }
         Cliente cliente = new Cliente();
 
         cliente.setLegalName(dados.getLegalName());
@@ -39,6 +44,9 @@ public class ClienteService {
         if (resultado.isEmpty()){
             return Optional.empty();
         }
+        if (clienteRepository.existsByCnpjAndIdNot(dados.getCnpj(), id)){
+            throw new CnpjJaCadastradoException();
+        }
 
         Cliente cliente = resultado.get();
 
@@ -50,6 +58,17 @@ public class ClienteService {
         Cliente clienteSalvo = clienteRepository.save(cliente);
 
         return Optional.of(clienteSalvo);
+    }
+
+    public boolean excluirCliente(UUID id){
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+
+        if (cliente.isEmpty()){
+            return false;
+        }
+
+        clienteRepository.delete(cliente.get());
+        return true;
     }
 
 
